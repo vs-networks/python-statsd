@@ -18,7 +18,7 @@ class Connection(object):
     :type disabled: bool
     '''
 
-    default_host = 'localhost'
+    default_host = 'metrics'
     default_port = 8125
     default_sample_rate = 1
     default_disabled = False
@@ -77,7 +77,6 @@ class Connection(object):
                 self.udp_sock.send(send_data)
             return True
         except Exception as e:
-            self.logger.exception('unexpected error %r while sending data', e)
             return False
 
     def __repr__(self):
