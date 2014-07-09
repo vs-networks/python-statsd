@@ -19,7 +19,7 @@ __all__ = [
 ]
 
 __package_name__ = 'python-statsd'
-__version__ = '1.6.3-vsn'
+__version__ = '1.6.3.vsn-02'
 __author__ = 'Rick van Hattem'
 __author_email__ = 'Wolph@wol.ph'
 __description__ = (

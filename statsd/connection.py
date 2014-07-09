@@ -39,10 +39,13 @@ class Connection(object):
         self.logger = logging.getLogger(
             '%s.%s' % (__name__, self.__class__.__name__))
         self.udp_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.udp_sock.connect((self._host, self._port))
-        self.logger.debug(
-            'Initialized connection to %s:%d with P(%.1f)',
-            self._host, self._port, self._sample_rate)
+        try:
+            self.udp_sock.connect((self._host, self._port))
+        except Exception:
+            self.udp_sock.close()
+            self.udp_sock = None
+            self.logger.warn('socket.connect() failed, disabling stats collection')
+            self._disabled = True
 
     def send(self, data, sample_rate=None):
         '''Send the data over UDP while taking the sample_rate in account
@@ -57,7 +60,6 @@ class Connection(object):
         :type sample_rate: int
         '''
         if self._disabled:
-            self.logger.debug('Connection disabled, not sending data')
             return False
         if sample_rate is None:
             sample_rate = self._sample_rate
